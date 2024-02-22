@@ -1,9 +1,7 @@
 package com.creil.demoCreil.student;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -13,15 +11,35 @@ import java.util.List;
 public class StudentController {
 
 
-    private final StudentService student;
+    private final StudentService service;
 
 
-    public StudentController(StudentService student) {
-        this.student = student;
+    public StudentController(StudentService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public Student save(@RequestBody Student student){
+        return  service.save(student);
+    }
+
+    @GetMapping("/{email}")
+    public Student findByEmail(@PathVariable("email") String email){
+        return service.findByEmail(email);
     }
 
     @GetMapping
     public List<Student> findStudents(){
-        return student.findStudents();
+        return service.findAllStudents();
+    }
+
+    @PutMapping
+    public Student updateStudent(@RequestBody Student student){
+        return service.updateStudent(student);
+    }
+
+    @DeleteMapping("/{email}")
+    public void delete(@PathVariable("email") String email){
+        service.delete(email);
     }
 }
